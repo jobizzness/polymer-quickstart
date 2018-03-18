@@ -1,0 +1,95 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<dom-module id="app-router">
+    <template>
+    
+        <app-location
+            route="{{route}}"
+            url-space-regex="^[[rootPath]]">
+        </app-location>
+
+        <app-route
+            route="[[route]]"
+            pattern="[[rootPath]]:page"
+            data="{{pageData}}"
+            tail="{{pageTail}}">
+        </app-route>
+
+        <app-route 
+            route="[[pageTail]]" 
+            pattern="/:slug" 
+            data="{{slugData}}" 
+            tail="{{slugTail}}">
+
+        <app-route 
+            route="{{slugTail}}" 
+            pattern="/:action" 
+            data="{{actionData}}">
+
+    </template>
+
+    <!-- 
+        Route Reducers
+    -->
+    <script>
+
+        App.reducers[C.UPDATE_ROUTE] = (state, action) => {
+            let newState = Object.assign({}, state);
+            newState.route = action.payload;
+            return newState;
+        }
+    </script>
+
+    <script>
+        App.Route = {
+            navigate: (uri) => {
+                window.history.pushState({}, null, uri);
+                window.dispatchEvent(new CustomEvent('location-changed'));
+            }
+        }
+    </script>
+
+    <script>
+        /**
+         * `biness-route` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class Router extends AppRouter() {
+
+            
+
+            static get routes(){
+                return [
+                    { name: '', guard: [], view: 'home'},
+                ]
+            }
+
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'app-router';
+            }
+
+            routes(){
+                return Router.routes;
+            }
+
+            constructor(){
+                super();
+
+                this.fallBackPage = 'home';
+            }
+
+
+        }
+
+        window.customElements.define(Router.is, Router);
+    </script>
+</dom-module>

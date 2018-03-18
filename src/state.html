@@ -1,0 +1,66 @@
+<link rel="import" href="../../../bower_components/polymer-redux/polymer-redux.html">
+<link rel="import" href="constants.html">
+
+<script>
+
+    /**
+    * @desc opens a modal window to display a message
+    * @param string msg - the message to be displayed
+    * @return bool - success or failure
+    */
+    window.App = {
+
+        state: {
+            user: null,
+            token: null,
+        },
+
+        env: {},
+
+        reducers: {},
+
+        boot: () => {
+            // Uncomment below to set OAuth tokens
+
+            // let token = JSON.parse(localStorage.getItem("token"));
+            // let user = JSON.parse(localStorage.getItem("user"));
+
+            // App.state.user = user;
+            // App.state.token = token;
+
+        }
+
+    }
+</script>
+
+<script>
+    // Setup a Redux store
+    const initial = App.state;
+
+    const reducer = function (state, action) {
+
+        for (let val in C) {
+
+            if (C[val] == action.type) {
+                return App.reducers[action.type](state, action)
+            }
+
+        }
+        return state;
+    };
+
+    const store = Redux.createStore(
+        reducer,
+        initial,
+
+        // The best part 8)
+        Redux.compose(
+            window.devToolsExtension
+                ? window.devToolsExtension()
+                : v => v
+        )
+    );
+
+    // Create the Polymer mixin
+    ReduxMixin = PolymerRedux(store);
+</script>
