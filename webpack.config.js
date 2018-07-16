@@ -25,29 +25,10 @@ const processEnv = {
  */
 const copyStatics = {
   copyWebcomponents: [{
-    from: resolve('./node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'),
-    to: join(OUTPUT_PATH, 'vendor'),
-    flatten: true
-  }, 
-  // {
-  //   from: resolve('./node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js'),
-  //   to: join(OUTPUT_PATH, 'vendor'),
-  //   flatten: true
-  // }, 
-//   {
-//     from: resolve('./node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js'),
-//     to: join(OUTPUT_PATH, 'vendor'),
-//     flatten: true
-//   },
-//    {
-//     from: resolve('./node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-hi-sd-ce.js'),
-//     to: join(OUTPUT_PATH, 'vendor'),
-//     flatten: true
-//   }, {
-//     from: resolve('./node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'),
-//     to: join(OUTPUT_PATH, 'vendor'),
-//     flatten: true
-//   }
+    from: resolve('./node_modules/@webcomponents'),
+    to: join(OUTPUT_PATH, 'vendor/@webcomponents'),
+    flatten: false
+  }
  ],
   copyOthers: [{
     from: 'assets/**',

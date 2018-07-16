@@ -25,7 +25,7 @@
     "rmbower": "node scripts/link-bower.js remove",
     "release": "standard-version",
     "postinstall": "node scripts/postinstall.js",
-    "start": "http-server dist -p $PORT"
+    "start": "yarn dev:module"
   },
   "xo": {
     "space": true,
@@ -76,9 +76,10 @@
     "xo": "0.21.0"
   },
   "dependencies": {
-    "@polymer/polymer": "3.0.0",
     "@polymer/app-layout": "^3.0.0-pre.19",
+    "@polymer/html-modules-toolkit": "0.0.2",
     "@polymer/lit-element": "^0.5.0",
+    "@polymer/polymer": "3.0.0",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "pwa-helpers": "^0.8.2",
     "redux": "^3.7.2",
