@@ -50,6 +50,7 @@
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.5.1",
     "cssnano": "3.10.0",
+    "cypress": "3.0.2",
     "fs-extra": "6.0.0",
     "http-server": "0.11.1",
     "lighthouse": "2.9.4",
