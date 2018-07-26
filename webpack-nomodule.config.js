@@ -16,11 +16,11 @@ module.exports = () => {
               presets: [[
                 'env',
                 {
-                  targets: {browsers: BROWSERS},
+                  targets: { browsers: BROWSERS },
                   debug: true
                 }
               ]],
-              plugins: [['transform-object-rest-spread', {useBuiltIns: true}]]
+              plugins: ["syntax-dynamic-import", ['transform-object-rest-spread', { useBuiltIns: true }]]
             }
           }
         }

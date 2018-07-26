@@ -1,10 +1,11 @@
 'use strict';
 
-const {resolve, join} = require('path');
+const { resolve, join } = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const {GenerateSW} = require('workbox-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const pkg = require('./package.json');
 
@@ -26,10 +27,10 @@ const processEnv = {
 const copyStatics = {
   copyWebcomponents: [{
     from: resolve('./node_modules/@webcomponents'),
-    to: join(OUTPUT_PATH, 'vendor/@webcomponents'),
+    to: join(OUTPUT_PATH, 'vendor'),
     flatten: false
   }
- ],
+  ],
   copyOthers: [{
     from: 'assets/**',
     context: resolve('./src'),
@@ -48,7 +49,7 @@ const copyStatics = {
 /**
  * Plugin configuration
  */
-const sharedPlugins = [new webpack.DefinePlugin({'process.env': processEnv})];
+const sharedPlugins = [new webpack.DefinePlugin({ 'process.env': processEnv })];
 const devPlugins = [new CopyWebpackPlugin(copyStatics.copyWebcomponents)];
 const buildPlugins = [
   new CopyWebpackPlugin(
@@ -58,7 +59,9 @@ const buildPlugins = [
     globDirectory: OUTPUT_PATH,
     globPatterns: ['**/!(*map*)'],
     globIgnores: ['**/sw.js'],
-    swDest: join(OUTPUT_PATH, 'sw.js')
+    swDest: join(OUTPUT_PATH, 'sw.js'),
+    skipWaiting: true,
+    clientsClaim: true
   })
 ];
 
@@ -78,11 +81,8 @@ const shared = env => {
       rules: [
         {
           test: /\.html$/,
-          use: ['text-loader']
-        },
-        {
-          test: /\.pcss$/,
-          use: ['text-loader', 'postcss-loader']
+          exclude: /node_modules/,
+          use: { loader: 'text-loader' }
         }
       ]
     },
@@ -97,6 +97,29 @@ const shared = env => {
       port: 3000,
       host: '0.0.0.0',
       disableHostCheck: true
+    },
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            compress: {
+              sequences: true,
+              dead_code: true,
+              conditionals: true,
+              booleans: true,
+              unused: true,
+              if_return: true,
+              join_vars: true,
+              drop_console: true
+            },
+            mangle: {
+            },
+            output: {
+              comments: false
+            }
+          }
+        })
+      ]
     }
   };
 };
